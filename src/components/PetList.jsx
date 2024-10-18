@@ -7,8 +7,8 @@ function PetList({ pets }) {
       {pets.length ? (
         <ul>
           {pets.map((pet) => (
-            <Link to={`/pets/${pet._id}`}>
-              <li key={pet._id}>{pet.name}</li>
+            <Link key={pet._id} to={`/pets/${pet._id}`}>
+              <li>{pet.name}</li>
             </Link>
           ))}
         </ul>

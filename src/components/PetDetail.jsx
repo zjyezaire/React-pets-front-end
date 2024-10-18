@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { getPet } from "../services/petService.js";
+import { useParams, Link, useNavigate } from "react-router-dom";
+import { getPet, deletePet } from "../services/petService.js";
 
-function PetDetail() {
+function PetDetail({ setToggle }) {
   const [pet, setPet] = useState({});
 
   const { petId } = useParams();
+  const navigate = useNavigate();
 
   const fetchPet = async () => {
     try {
@@ -20,6 +21,12 @@ function PetDetail() {
     fetchPet();
   }, []);
 
+  const handleDelete = async () => {
+    await deletePet(petId);
+    setToggle((prev) => !prev);
+    navigate("/");
+  };
+
   return (
     <div>
       <h1>{pet.name}</h1>
@@ -27,6 +34,12 @@ function PetDetail() {
       <h2>
         Age: {pet.age} year{pet.age > 1 ? "s" : ""} old
       </h2>
+      <div>
+        <Link to={`/pets/${pet._id}/edit`}>
+          <button>Edit</button>
+        </Link>
+        <button onClick={handleDelete}>Delete</button>
+      </div>
     </div>
   );
 }
